@@ -1,0 +1,66 @@
+.custom-select {
+    position: relative;
+    width: 200px;
+}
+
+.custom-select:focus {
+    outline: none;
+}
+
+.select-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #2C3030;
+    cursor: pointer;
+    color: #fff;
+}
+
+.arrow {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.options-list {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    background-color: #2C3030;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transform: scaleY(0);
+    opacity: 0;
+    transform-origin: top;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 100;
+    list-style: none;
+}
+
+.options-list.open {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.option:hover,
+.option.focused {
+    background-color: #e3e3e3;
+    color: #333;
+}

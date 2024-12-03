@@ -1,0 +1,33 @@
+.header {
+    width: 100%;
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 auto;
+    width: 70%;
+    padding: 10px 0;
+}
+
+.header__title {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.header__rates {
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.header__rate {
+    display: flex;
+}
+
+.header__rate span {
+    display: inline-block;
+    width: 56px;
+}

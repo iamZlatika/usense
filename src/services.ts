@@ -1,0 +1,1 @@
+export const getCurrency = (rate: number) => parseFloat((1 / rate).toFixed(2))

@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #222626;
+}
+
+.component {
+    background-color: #2C3030;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.card {
+
+    padding: 10px;
+    width: 70%;
+    margin: 30px auto 0;
+    border-radius: 10px;
+}
+
+.card__title {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .card {
+        display: flex;
+        flex-direction: column;
+
+    }
+}

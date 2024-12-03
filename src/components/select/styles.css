@@ -1,0 +1,34 @@
+.select {
+    display: flex;
+    border: 1px #fff solid;
+    border-radius: 10px;
+    align-items: center;
+    width: 200px;
+}
+
+.select__input {
+    height: 46px;
+    background-color: #2C3030;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: inherit;
+    padding-left: 10px;
+    width: 50%;
+}
+
+.select__divider {
+    width: 1px;
+    height: 34px;
+    background-color: #fff;
+    margin: 0 4px;
+}
+
+.select__options {
+    background-color: #2C3030;
+    border: none;
+    outline: none;
+    color: #fff;
+    height: 46px;
+    border-radius: inherit;
+}
