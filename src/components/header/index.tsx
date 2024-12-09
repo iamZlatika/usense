@@ -1,11 +1,11 @@
+import { TRate } from '../../helpers/types'
 import './styles.css'
 
 interface IHeader {
-    dollarRate: number
-    euroRate: number
+    rates: TRate,
 }
 
-const Header = ({dollarRate, euroRate}: IHeader) => {
+const Header = ({ rates }: IHeader) => {
     const uahSymbol = '\u20B4'
 
     return (
@@ -13,10 +13,10 @@ const Header = ({dollarRate, euroRate}: IHeader) => {
             <div className="header__wrapper">
                 <div className="header__rates">
                     <div className="header__rate">
-                        <span>Dollar: </span> {dollarRate} {uahSymbol}
+                        <span>Dollar: </span> {rates.USD} {uahSymbol}
                     </div>
                     <div className="header__rate">
-                        <span>Euro: </span>{euroRate} {uahSymbol}
+                        <span>Euro: </span>{rates.EUR} {uahSymbol}
                     </div>
                 </div>
             </div>

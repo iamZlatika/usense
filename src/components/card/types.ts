@@ -1,1 +1,0 @@
-export type TCurrency = "EUR" | "USD" | "UAH";
