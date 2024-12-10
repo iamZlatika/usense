@@ -1,77 +1,54 @@
 import './styles.css'
 import Select from "../select";
-import React, { useState } from "react";
-import { TCurrency } from "./types.ts";
+import { useState } from "react";
+import { TRate } from '../../helpers/types.ts';
+import { TSelectValue } from './helpers/types.ts';
+import { convertCurrency, validateAmountChange } from './helpers/services.ts';
 
 interface ICard {
-    dollarRate: number;
-    euroRate: number;
+    rates: TRate,
 }
 
-const Card = ({dollarRate, euroRate}: ICard) => {
-    const currencies = {
-        UAH: 1,
-        USD: dollarRate,
-        EUR: euroRate,
-    };
-    const [firstValue, setFirstValue] = useState<number>(currencies.EUR);
-    const [firstCurrency, setFirstCurrency] = useState<TCurrency>("UAH");
-    const [secondValue, setSecondValue] = useState<number>(currencies.UAH);
-    const [secondCurrency, setSecondCurrency] = useState<TCurrency>("EUR");
+const Card = ({ rates }: ICard) => {
 
+    const defaultFirstSelectValue = {
+        amount: rates.EUR,
+        currency: "UAH"
+    }
+    const defaultSecondSelectValue = {
+        amount: rates.UAH,
+        currency: "EUR"
+    }
 
-    const convertCurrency = (
-        amount: number,
-        fromCurrency: string,
-        toCurrency: string
-    ): number => {
-        if (fromCurrency === toCurrency) return amount;
-        const rateFrom = currencies[fromCurrency];
-        const rateTo = currencies[toCurrency];
-        if (fromCurrency === "UAH") {
-            return parseFloat((amount / rateTo).toFixed(2));
-        }
-        if (toCurrency === "UAH") {
-            return parseFloat((amount * rateFrom).toFixed(2));
-        }
-
-        const amountInUAH = amount * rateFrom;
-        const result = amountInUAH / rateTo;
-        return parseFloat(result.toFixed(2));
-    };
-
-    const handleAmountChange = (
-        value: string,
-        setCurrentValue: React.Dispatch<React.SetStateAction<number>>,
-        setOtherValue: React.Dispatch<React.SetStateAction<number>>,
-        fromCurrency: string,
-        toCurrency: string
-    ) => {
-        const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
-        const validValue = isNaN(numericValue) ? 0 : numericValue;
-        if (typeof setCurrentValue === 'function' && typeof setOtherValue === 'function') {
-            setCurrentValue(validValue);
-            setOtherValue(convertCurrency(validValue, fromCurrency, toCurrency));
-        }
-    };
+    const [firstValue, setFirstValue] = useState<TSelectValue>(defaultFirstSelectValue);
+    const [secondValue, setSecondValue] = useState<TSelectValue>(defaultSecondSelectValue);
 
 
     const handleFirstAmountChange = (value: string) => {
-        handleAmountChange(value, setFirstValue, setSecondValue, firstCurrency, secondCurrency)
+        const firstSelectValue = { ...firstValue, amount: validateAmountChange(value) }
+
+        setFirstValue(firstSelectValue)
+        setSecondValue({ ...secondValue, amount: convertCurrency(rates, firstSelectValue, secondValue.currency) })
     };
 
     const handleSecondAmountChange = (value: string) => {
-        handleAmountChange(value, setSecondValue, setFirstValue, secondCurrency, firstCurrency);
+        const secondSelectValue = { ...secondValue, amount: validateAmountChange(value) }
+
+        setSecondValue(secondSelectValue)
+        setFirstValue({ ...firstValue, amount: convertCurrency(rates, secondSelectValue, firstValue.currency) })
     };
 
-    const handleFirstCurrencyChange = (currency: TCurrency) => {
-        setFirstCurrency(currency);
-        setSecondValue(convertCurrency(firstValue, currency, secondCurrency));
+
+    const handleFirstCurrencyChange = (currency: string) => {
+        const innerValue = { currency, amount: firstValue.amount }
+        setFirstValue(innerValue);
+        setSecondValue({ ...secondValue, amount: convertCurrency(rates, innerValue, secondValue.currency) });
     };
 
-    const handleSecondCurrencyChange = (currency: TCurrency) => {
-        setSecondCurrency(currency);
-        setFirstValue(convertCurrency(secondValue, currency, firstCurrency));
+    const handleSecondCurrencyChange = (currency: string) => {
+        const innerValue = { currency, amount: secondValue.amount }
+        setSecondValue(innerValue);
+        setFirstValue({ ...firstValue, amount: convertCurrency(rates, innerValue, firstValue.currency) });
     };
 
     return (
@@ -79,14 +56,14 @@ const Card = ({dollarRate, euroRate}: ICard) => {
             <h2 className="card__title">Enter the amount and select the currency for conversion.</h2>
             <div className="card__container">
                 <Select
-                    value={firstValue}
-                    currency={firstCurrency}
+                    value={firstValue.amount}
+                    currency={firstValue.currency}
                     onValueChange={handleFirstAmountChange}
                     onCurrencySelect={handleFirstCurrencyChange}
                 />
                 <Select
-                    value={secondValue}
-                    currency={secondCurrency}
+                    value={secondValue.amount}
+                    currency={secondValue.currency}
                     onValueChange={handleSecondAmountChange}
                     onCurrencySelect={handleSecondCurrencyChange}
                 />
